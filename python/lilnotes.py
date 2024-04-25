@@ -33,6 +33,7 @@ def parse_config(path: str) -> SettingsObject:
     file.close();
     if processed[0] != "LILSTATE":
         print("The given file is not a valid state file (missing mgnum 'LILSTATE')");
+        exit(1);
     processed = processed[1:];
     for i in processed:
         if i == '': continue;
@@ -42,13 +43,12 @@ def parse_config(path: str) -> SettingsObject:
             tokens = i[1:].replace('%20', ' ').split(',');
             values.append((tokens[0], tokens[1]));
     return SettingsObject(notes, values, path);
-
-
+1
 def print_help():
     print(f"'help' or 'h':      open this menu");
     print(f"'new <path>'        create an empty settings at <path>");
     print(f"'-<content>':       create a note of content <content>");
-    print(f"'=<name>,<value>:   create a value of name <name> and value <value>'");
+    print(f"'=<name>,<value>':  create a value of name <name> and value <value>");
     print(f"'save':             save the current notes");
     print(f"'load <path>':      load the settings of the file at <path> "+
                               f"as the current settings");
@@ -133,7 +133,7 @@ def main():
     elif os.name == 'posix':
         home = os.getenv("HOME") + "/.lilnotes";
         state_path = home + "/state.lil";
-    print(f"Lilnotes - a simple terminal notes app.");
+    print(f"Lilnotes - a simple terminal notes app. [v1.0.py]");
     print(f"loading state file from {home}");
     if not os.path.exists(home):
         os.makedirs(home);
