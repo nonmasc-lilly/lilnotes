@@ -9,6 +9,9 @@
 #include <unistd.h>
 #endif
 
+#define VMAJ 1
+#define VMIN 1
+
 #define HOME_DIRECTORY get_home_config_directory(false)
 #define FREE_HOME_DIRECTORY() get_home_config_directory(true)
 #define FREE_FILEPATH(filepath) free(filepath)

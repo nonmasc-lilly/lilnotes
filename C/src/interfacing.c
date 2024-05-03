@@ -61,12 +61,17 @@ MSTRING get_input() {
 
 void interface(settings_data *initial_state) {
     char *input, *working_input;
-    char *buf, *eptr;
+    char *buf, *buf2, *eptr;
     unsigned int blen, i, min, max;
     FILE *fp;
     settings_data *state;
     value_data *working_value;
     state = initial_state;
+    printf("Lilnotes Copyright (C) 2024 Lilly Tau\n");
+    printf("This program comes with ABSOLUTELY NO WARRANTY.\n");
+    printf("This is free software, and you are welcome to redistrobute it\n");
+    printf("under certain condition. Type \"version\" for more details.\n");
+    printf("Type \"license\" for the license in full.\n");
     while(1) {
         printf("What to do? ['h' for help]> ");
         fflush(stdout);
@@ -230,6 +235,37 @@ void interface(settings_data *initial_state) {
             }
         }
         ELNCMP(input, "exit") exit_program(state);
+        ELNCMP(input, "version") {
+            printf("Lilnotes %d.%d - the mini terminal notes app\n", VMAJ, VMIN);
+            printf("Copyright (C) 2024 Lilly Tau\n\n");
+            printf("This program is free software you can redistribute it and/or ");
+            printf("modify\nit under the terms of the GNU General Public License as ");
+            printf("published by\nthe Free Software Foundation, either version 3, or ");
+            printf("(at your option) any later version.\n\n");
+            printf("This program is distributed in the hope that it will be useful, but\n");
+            printf("WITHOUT ANY WARRANTY; without even the implied warranty of\n");
+            printf("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n");
+            printf("General Public License for more details.\n\n");
+            printf("You should have recieved a copy of the GNU General Public License\n");
+            printf("along with this program.  If not, see <https://www.gnu.org/licenses/>.");
+            printf("\n");
+        } ELNCMP(input, "license") {
+            append_paths(&buf2, HOME_DIRECTORY, "LICENSE.md");
+            fp = fopen(buf2, "r");
+            if(!fp) {
+                printf(".lilnotes/LICENSE.md is missing, go to "
+                       "<https://www.gnu.org/licenses/> for the license details.\n");
+                continue;
+            }
+            free(buf2);
+            blen = (fseek(fp, 0L, SEEK_END), ftell(fp));
+            fseek(fp, 0L, SEEK_SET);
+            buf = malloc(blen);
+            fread(buf, 1, blen, fp);
+            fclose(fp);
+            printf("%s\n", buf);
+            free(buf);
+        }
         free(input);
     }
 }
